@@ -1,5 +1,5 @@
 # kaleido
-*by Vitor Campanholo Guizilini
+*by Vitor Campanholo Guizilini*
 
 # INSTALLATION
 
