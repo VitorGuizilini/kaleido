@@ -30,6 +30,12 @@ class Batch:
         if shuffle: random.shuffle( self.rnd )
         self.i = 0
 
+    ### SHAPE
+    def shape( self , n = 0 , with_none = False ):
+        shape = list( self.data[n][0].shape )
+        if with_none: shape = [ None ] + shape
+        return shape
+
     ### COPY
     def copy( self , n = None ):
         if n is None: return Batch( copy.deepcopy( self.data ) , self.batch_size() , self.multiple )
