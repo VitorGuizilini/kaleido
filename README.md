@@ -1,6 +1,8 @@
 # kaleido
 *by Vitor Campanholo Guizilini*
 
+Python library that provides extra functionality to the Tensorflow library. 
+
 # INSTALLATION
 
 Add the following line to your ~/.bashrc file:
