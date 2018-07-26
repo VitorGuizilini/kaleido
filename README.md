@@ -21,7 +21,7 @@ in a terminal, to refresh your environment variables.
 
 - **kaleido:** the actual library
 - **projects:** applications that use the library
-- **download_datasets:** script to download the datasets for each project. Usage:
+- **download_datasets:** script to download the datasets for each project (*.tar.gz* files are downloaded to */datasets*, please extract after downloading). Usage:
 
 ```
 ./download_datasets nameofproject
