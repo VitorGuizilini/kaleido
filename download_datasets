@@ -1,0 +1,9 @@
+#!/bin/bash
+DATASET=$1.tar.gz
+FOLDER='datasets'
+WEBSITE='https://pykaleido.000webhostapp.com/datasets/'
+LINK=$WEBSITE$DATASET
+mkdir -p $FOLDER
+wget $LINK --directory-prefix=$FOLDER
+
+
