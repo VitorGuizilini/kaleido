@@ -5,9 +5,9 @@ import kaleido as kld
 ### RNN
 def rnn( input , name , channels , init_state = None , in_drop = None , out_drop = None , **args ):
 
-    args = kld.aux.merge( [ kld.tf.layer.default , args ] )
-    in_drop = kld.list.make( in_drop )
-    out_drop = kld.list.make( out_drop )
+    name = kld.lst.merge_str( name )
+    args = kld.aux.merge_dicts( kld.tf.layer.default , args )
+    in_drop , out_drop = kld.lst.make( in_drop ) , kld.lst.make( out_drop )
 
     batch_size = kld.tf.shape( input )[0]
 
@@ -24,10 +24,10 @@ def rnn( input , name , channels , init_state = None , in_drop = None , out_drop
 
         if init_state is None: init_state = cells.zero_state( batch_size , dtype = tf.float32 )
 
-        input = kld.tf.layer.apply_ops( input , args['prev'] )
+        input = kld.tf.apply_op( input , args['prev'] )
         output , state = tf.nn.dynamic_rnn( cells , input ,
                             initial_state = init_state , dtype = tf.float32 )
-        output = kld.tf.layer.apply_ops( output , args['post'] )
+        output = kld.tf.apply_op( output , args['post'] )
 
     return output , state
 

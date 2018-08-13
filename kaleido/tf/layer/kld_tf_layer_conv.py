@@ -5,7 +5,8 @@ import kaleido as kld
 ### CONV
 def conv( d , fn , input , name , channels , ksize , strides , **args ):
 
-    args = kld.aux.merge( [ kld.tf.layer.default , args ] )
+    name = kld.lst.merge_str( name )
+    args = kld.aux.merge_dicts( kld.tf.layer.default , args )
 
     ksize = kld.tf.layer.set_ksize( ksize , d )
     strides = kld.tf.layer.set_strides( strides , d )
@@ -19,11 +20,11 @@ def conv( d , fn , input , name , channels , ksize , strides , **args ):
         wgts = kld.tf.variable( wgts_shape , 'wgts' , 'wgts' , **args )
         bias = kld.tf.variable( bias_shape , 'bias' , 'bias' , **args )
 
-        input = kld.tf.layer.apply_ops( input , args['prev'] )
+        input = kld.apply( input , args['prev'] )
         output = fn( input = input , filter = wgts , strides = strides ,
                      padding = args['padding'] )
         output = tf.add( output , bias )
-        output = kld.tf.layer.apply_ops( output , args['post'] )
+        output = kld.apply( output , args['post'] )
 
     return output
 

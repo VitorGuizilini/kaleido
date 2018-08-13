@@ -1,6 +1,7 @@
 __pycache__/
+ZZZ/
 logs/
 code/
-datasets/
+data/
 olorin*
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 DATASET=$1.tar.gz
-FOLDER='datasets'
+FOLDER='data'
 WEBSITE='https://pykaleido.000webhostapp.com/datasets/'
 LINK=$WEBSITE$DATASET
 mkdir -p $FOLDER

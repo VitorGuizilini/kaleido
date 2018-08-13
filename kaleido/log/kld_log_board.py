@@ -8,25 +8,24 @@ class Board:
 
     ### __INIT__
     def __init__( self , path , sess = None ):
-        path , self.sess = path , sess
-        self.writer = tf.summary.FileWriter( path + '/tensorboard' , tf.get_default_graph() )
-        self.dict = {}
+        path , self.sess , self.dict = path , sess , {}
+        self.writer = tf.summary.FileWriter( path + '/board' , tf.get_default_graph() )
 
-    ### GET SCALAR
-    def get_scalar( self , name ):
+    ### START SCALAR
+    def start_scalar( self , name ):
         if kld.chk.is_seq( name ):
-            for item in name: self.get_scalar( item )
+            for item in name: self.start_scalar( item )
         else:
-            plch = tf.placeholder( tf.float32 , None , name = 'Logs_' + name )
+            plch = kld.tf.plchf( None , 'Logs_' + name )
             summ = tf.summary.scalar( name , plch )
             self.dict[ name ] = [ plch , summ ]
 
-    ### GET IMAGE
-    def get_image( self , name , max_outputs = 1000 ):
+    ### START IMAGE
+    def start_image( self , name , max_outputs = 1000 ):
         if kld.chk.is_seq( name ):
-            for item in name: self.get_image( item )
+            for item in name: self.start_image( item )
         else:
-            plch = tf.placeholder( tf.float32 , [ None ] * 4 , name = 'Logs_' + name )
+            plch = kld.tf.plchf( [ None ] * 4 , 'Logs_' + name )
             summ = tf.summary.image( name , plch , max_outputs = max_outputs )
             self.dict[ name ] = [ plch , summ ]
 
@@ -45,16 +44,16 @@ class Board:
 
     ### SCALAR
     def scalar( self , name , data , step ):
-        name = kld.list.make( name )
+        name = kld.lst.make( name )
         for item in name:
             if item not in self.dict:
-                self.get_scalar( name )
+                self.start_scalar( name )
         self.store( name , data , step )
 
     ### IMAGE
     def image( self , name , data , step ):
-        name = kld.list.make( name )
+        name = kld.lst.make( name )
         for item in name:
             if item not in self.dict:
-                self.get_image( name )
+                self.start_image( name )
         self.store( name , data , step )

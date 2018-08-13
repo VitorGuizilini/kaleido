@@ -5,8 +5,11 @@ import kaleido as kld
 ### RSCONV2D
 def rsconv2d( input , name , channels , ksize , shapeout , **args ):
 
+    name = kld.lst.merge_str( name )
+    args = kld.aux.merge_dicts( kld.tf.layer.default , args )
+
     shapein = kld.tf.shape( input )
-    if kld.chk.is_tensor( shapeout ):
+    if kld.chk.is_tsr( shapeout ):
         shapeout = kld.tf.shape( shapeout )
 
     if kld.chk.is_seq( shapeout ):

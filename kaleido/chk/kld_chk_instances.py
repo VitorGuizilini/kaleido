@@ -1,71 +1,43 @@
 
-import numpy as np
-import tensorflow as tf
+import numpy
+import tensorflow
 
-### IS TUPLE
-def is_tuple( input ):
-    return isinstance( input , tuple )
+def empty( x ):  return x is None or ( is_seq( x ) and len( x ) == 0 )
+def nested( x ): return is_lst( x ) and is_lst( x[0] )
+def nested2( x ): return is_lst( x ) and is_lst( x[0] ) and is_lst( x[0][0] )
 
-### IS LIST
-def is_list( input ):
-    return isinstance( input , ( list ) )
+def is_lst( x ): return isinstance( x , list  )
+def is_tup( x ): return isinstance( x , tuple )
+def is_seq( x ): return isinstance( x , ( list , tuple ) )
+def is_npy( x ): return isinstance( x , numpy.ndarray )
 
-### IS SEQ
-def is_seq( input ):
-    return isinstance( input , ( list , tuple ) )
+def is_tsr( x ): return isinstance( x , tensorflow.Tensor   )
+def is_var( x ): return isinstance( x , tensorflow.Variable )
 
-### IS 2SEQ
-def is_2seq( input ):
-    return is_seq( input ) and is_seq( input[0] )
+def is_int( x ): return isinstance( x , int   )
+def is_flt( x ): return isinstance( x , float )
+def is_str( x ): return isinstance( x , str   )
+def is_dct( x ): return isinstance( x , dict  )
+def is_bol( x ): return isinstance( x , bool  )
 
-### IS NUMPY
-def is_numpy( input ):
-    return isinstance( input , np.ndarray )
+def is_str_int( x ):
+    if x is None: return False
+    if not is_str( x ): x = str( x )
+    try: int( x ) ; return True
+    except ValueError: return False
+def is_str_flt( x ):
+    if x is None: return False
+    if not is_str( x ): x = str( x )
+    try: float( x ) ; return True
+    except ValueError: return False
+def is_type( x , t ):
+    if x is None: return False
+    try: t( x ) ; return True
+    except: return False
 
-### IS TENSOR
-def is_tensor( input ):
-    return isinstance( input , tf.Tensor )
-
-### IS VARIABLE
-def is_variable( input ):
-    return isinstance( input , tf.Variable )
-
-### IS INT
-def is_int( input ):
-    return isinstance( input , int )
-
-### IS FLOAT
-def is_float( input ):
-    return isinstance( input , float )
-
-### STR
-def is_str( input ):
-    return isinstance( input , str )
-
-### IS DICT
-def is_dict( input ):
-    return isinstance( input , dict )
-
-### IS CALLABLE
-def is_callable( input ):
-    return callable( input )
-
-### IS CLASS
-def is_class( input , type ):
-    return isinstance( input , type )
-
-### STR IS INT
-def is_str_int( input ):
-    try:
-        int( input )
-        return True
-    except ValueError:
-        return False
-
-### STR IS FLOAT
-def is_str_float( input ):
-    try:
-        float( input )
-        return True
-    except ValueError:
-        return False
+#def convert( x ):
+#    try: x = float( x )
+#    except: x = x
+##    if x.is_integer(): x = int( x )
+##    print( '333' , x )
+#    return x
