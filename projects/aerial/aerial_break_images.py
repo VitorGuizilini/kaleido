@@ -4,17 +4,17 @@ import kaleido as kld
 ######################
 
 parser = kld.mng.Parser( 'Image Breaker for Aerial' )
-parser.add_str( 'path' , '../../data/aerial/cerrado' , h = 'Path to input images and labels')
-parser.add_lint( 'size' , [ 128 , 128 ] , h = 'Cropped image size' )
-parser.add_int( 'scale' , 5 , h = 'Downsizing scale for original image' )
-parser.add_str( 'suffix' , 'nearest' , h = 'Dataset suffix' )
+parser.add_str(  'path'   , d = 'aerial/cerrado' , h = 'Path to input images and labels')
+parser.add_int(  'scale'  , d = 5                , h = 'Downsizing scale for original image' )
+parser.add_lint( 'size'   , d = [ 128 , 128 ]    , h = 'Cropped image size' , q = 2 )
+parser.add_str(  'suffix' , d = 'nearest'        , h = 'Dataset suffix' )
 args = parser.args()
 
 ######################
 
 path = '../../data/' + args.path
 folders = kld.mng.Folder( path , recurse = 1 )
-imgfiles , lblfiles = folders.split_files( [ 'images' , 'labels' ] , [ '*.jpg' , '*.JPG' ] )
+imgfiles , lblfiles = folders.split_files( [ 'images' , 'labels' ] , [ '*.jpg' ] )
 sc , sx , sy = args.scale , args.size[0] , args.size[1]
 
 def save_crop( image , x , y , type , saver , folder , cnt ):
