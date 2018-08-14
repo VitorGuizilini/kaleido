@@ -16,8 +16,8 @@ def rmfile( file ):
 def level( path , n = 0 ):
     return path.split('/')[-n-1]
 
-### FINAL
-def final( path ):
+### FNAME
+def fname( path ):
     return level( path )
 
 ### NAME

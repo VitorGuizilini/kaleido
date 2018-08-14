@@ -5,7 +5,7 @@ if [ "$#" -eq 0 ]; then
     echo "|----------------------------------------------|"
     echo "|-----------KALEIDO-LOGS-TO-DOWNLOAD-----------|"
     echo "|----------------------------------------------|"
-    echo "|----- aerial_cerrado_netC_trained01           |"
+    echo "|----- aerial_cerrado_netA_trained01           |"
     echo "|----------------------------------------------|"
     
 else
