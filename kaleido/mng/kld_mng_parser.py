@@ -46,13 +46,15 @@ class Parser:
 
         args = sys.argv[1:]
         if len( args ) > 0 and args[0][:2] != '--':
-            print( 'ERROR IN ARGUMENTS' ); exit()
+            print( '### KALEIDO ERROR: WRONG PREFIX (not --)' ); exit()
         while len( args ) > 0:
             if len( args[0] ) > 2 and args[0][:2] == '--':
                 name , input = args.pop(0)[2:] , []
                 while len( args ) > 0 and ( len( args[0] ) < 2 or args[0][:2] != '--' ):
                     input.append( args.pop(0) )
-                self.inputs[name] = input
+                if name in self.inputs:
+                    print( '### KALEIDO ERROR: REPEATED ARGUMENT (%s)' % name ); exit()
+                else: self.inputs[name] = input
 
         load = None
         if 'args' in self.inputs and self.inputs['args'] is not None:
