@@ -9,20 +9,20 @@ class Model( kld.tf.models.baseA ):
     ### __INIT__
     def __init__( self , data_train , data_valid , args ):
 
-        log_path = args.log_path + 'net' + args.net + '/'
-        args.load_path = None if args.load is None else log_path + args.load
-        args.save_path = None if args.save is None else log_path + args.save
+        path = '../../logs/%s/version%s/' % ( args.path , args.version )
+        args.load_path = None if args.load is None else path + args.load
+        args.save_path = None if args.save is None else path + args.save
 
         self.data_train = kld.mng.MultiBatch( data_train , batch_size = args.batch_sizes[0] )
         self.data_valid = kld.mng.MultiBatch( data_valid , batch_size = args.batch_sizes[1] )
         self.data = [ self.data_train , self.data_valid ]
 
-        net_name = 'aerial_network' + args.net
+        net_name = 'aerial_network' + args.version
         net = kld.pth.module( 'networks.' + net_name , 'Network' )
         self.net = net( self.data_train )
 
         self.args = args
-        self.postInit( files = [ 'aerial_cerrado_main.py' ,
+        self.postInit( files = [ kld.pth.fname( __file__ ) ,
                                  'networks/' + net_name + '.py' ] )
 
         h , w , _ = self.data_train.shape(0)

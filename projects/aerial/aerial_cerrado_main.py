@@ -34,31 +34,29 @@ def augment( images , labels ):
 parser = kld.mng.Parser( 'Aerial Cerrado' )
 kld.tf.models.argsA( parser )
 
-parser.add_rstr( 'net'     , d = None       , h = 'Version of the network used'        )
-parser.add_str(  'dataset' , d = 'original' , h = 'Dataset to be used (cerrado_)'      )
-parser.add_bol(  'augment' , d = False      , h = 'Augment training data'              )
-parser.add_bol(  'colors'  , d = False      , h = 'Include other colorspaces'          )
+parser.add_rstr( 'version' , d = None  , h = 'Version of the network used'        )
+parser.add_str(  'dataset' , d = None  , h = 'Dataset to be used (cerrado_)'      )
+parser.add_bol(  'augment' , d = False , h = 'Augment training data'              )
+parser.add_bol(  'colors'  , d = False , h = 'Include other colorspaces'          )
 
 parser.add_lint( 'num_data'    , d = [0,0] , h = 'Number of sampled Train/Valid points' , q = 2 )
-parser.add_lint( 'batch_sizes' , d = [1,1] , h = 'Batch size for Train/Valid data'      , q = 2 )
+parser.add_lint( 'batch_sizes' , d = [5,1] , h = 'Batch size for Train/Valid data'      , q = 2 )
+parser.add_lbol( 'eval_draw'   , d = [False,True]      , h = 'Train/Valid draw flags'   , q = 2 )
+parser.add_lstr( 'eval_capt'   , d = ['train','valid'] , h = 'Train/Valid captions'     , q = 2 )
 
-parser.add_lbol( 'eval_draw' , d = [False,True]      , h = 'Train/Valid draw flags' , q = 2 )
-parser.add_lstr( 'eval_capt' , d = ['train','valid'] , h = 'Train/Valid captions'   , q = 2 )
-
-parser.add_int( 'eval_num' , d = 6 , h = 'Folder to use for validation' )
-parser.add_str( 'log_path' , d = '../../logs/aerial/cerrado/' , h = 'Folder where information is stored' )
+parser.add_int(  'eval_idx' , d = 6 , h = 'Index to use for validation' )
+parser.add_str(  'path' , d = 'aerial/cerrado' , h = 'Path to data' )
 
 args = parser.args()
 
 ######################
 
-data_path = '../../data/aerial/cerrado_' + args.dataset
+data_path = '../../data/%s_%s' % ( args.path , args.dataset )
 folders = kld.mng.Folder( data_path , recurse = 2 )
 images , labels = folders.split( [ 'images' , 'labels' ] )
 
-idx_valid = [ 6 ]
-images_train , images_valid = images.split_files( idx_valid , [ '*.png' , '*.jpg' ] )
-labels_train , labels_valid = labels.split_files( idx_valid , [ '*.png' , '*.jpg' ] )
+images_train , images_valid = images.split_files( args.eval_idx , [ '*.png' , '*.jpg' ] )
+labels_train , labels_valid = labels.split_files( args.eval_idx , [ '*.png' , '*.jpg' ] )
 
 [ images_train , labels_train ] = kld.lst.sample( [ images_train , labels_train ] , args.num_data[0] )
 [ images_valid , labels_valid ] = kld.lst.sample( [ images_valid , labels_valid ] , args.num_data[1] )
