@@ -1,6 +1,6 @@
 
-import kaleido as kld
 from tqdm import tqdm
+import kaleido as kld
 
 ### ARGSA
 def argsA( parser ):
@@ -30,7 +30,9 @@ class baseA:
         self.loader.restore_model( 'trained' )
 
         if self.args.train:
-            if files is not None: self.saver.file( 'code' , files )
+            if files is not None:
+                files.append( kld.pth.nameruninit() )
+                self.saver.file( '' , files )
             self.saver.args( 'args' , self.args )
 
         self.single_stats = single_stats

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ]; then
+
+    echo "|----------------------------------------------|"
+    echo "|-----------KALEIDO-DATA-TO-DOWNLOAD-----------|"
+    echo "|----------------------------------------------|"
+    echo "|----- aerial_cerrado                          |"
+    echo "|----------------------------------------------|"
+
+else
+
+    DATASET=$1.tar.gz
+    FOLDER='data'
+    WEBSITE='https://pykaleido.000webhostapp.com/data/'
+    LINK=$WEBSITE$DATASET
+    mkdir -p $FOLDER
+    wget $LINK --directory-prefix=$FOLDER
+
+fi

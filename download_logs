@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ]; then
+
+    echo "|----------------------------------------------|"
+    echo "|-----------KALEIDO-LOGS-TO-DOWNLOAD-----------|"
+    echo "|----------------------------------------------|"
+    echo "|----- aerial_cerrado_netC_trained01           |"
+    echo "|----------------------------------------------|"
+    
+else
+
+
+    DATASET=$1.tar.gz
+    FOLDER='logs'
+    WEBSITE='https://pykaleido.000webhostapp.com/logs/'
+    LINK=$WEBSITE$DATASET
+    mkdir -p $FOLDER
+    wget $LINK --directory-prefix=$FOLDER
+
+fi
+

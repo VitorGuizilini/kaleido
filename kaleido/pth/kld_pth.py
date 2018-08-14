@@ -1,5 +1,6 @@
 
 import os
+import sys
 import importlib
 import kaleido as kld
 
@@ -15,6 +16,10 @@ def rmfile( file ):
 def level( path , n = 0 ):
     return path.split('/')[-n-1]
 
+### FINAL
+def final( path ):
+    return level( path )
+
 ### NAME
 def name( path ):
     name = level( path )
@@ -24,6 +29,14 @@ def name( path ):
 ### DIR
 def dir( path , n = 0 ):
     return '/'.join( path.split('/')[:-n-1] )
+
+### NAMERUNINIT
+def nameruninit():
+    return sys.argv[0]
+
+### NAMERUNCURR
+def nameruncurr():
+    return __file__
 
 ### MODULE
 def module( file , attr = None ):
