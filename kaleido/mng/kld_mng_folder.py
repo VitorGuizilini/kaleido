@@ -92,7 +92,7 @@ class Folder:
             for f in self.folders:
                 filesi.append( read_files( f + '/' + paths[i] , pat ) )
             files.append( kld.lst.flatten( filesi ) )
-        if max is not None: files = [ files[i][:max] for i in range( len( files ) ) ]
+        if max is not None and max > 0: files = [ files[i][:max] for i in range( len( files ) ) ]
         return files[0] if len( files ) == 1 else files
 
     ### KEEP FILES

@@ -1,8 +1,9 @@
 __pycache__/
 ZZZ/
+data/
 logs/
 code/
-data/
+pycharm/
 olorin*
 *.pyc
 

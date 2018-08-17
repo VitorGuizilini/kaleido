@@ -251,3 +251,21 @@ class Parser:
     def add_rtbol( self , name , d = None , c = None , h = None , q = None ): self.add( name , bool  , '+' , d , c , q , h , True  ) ; self.info[name] = 'tuple'
 
     def add_lst( self , name , t , d = None , c = None , h = None ): self.add( name, t , '+' , d , c , len(t) , h , False )
+
+    def add_load_save_train_restart( self ):
+
+        self.add_str( 'load'    , d = None  , h = 'Path to logs folder to load' )
+        self.add_str( 'save'    , d = None  , h = 'Path to logs folder to save' )
+        self.add_bol( 'train'   , d = False , h = 'Flag for Training/Testing'   )
+        self.add_bol( 'restart' , d = False , h = 'Flag for save model restart' )
+
+    def add_num_epochs_eval_every( self ):
+
+        self.add_int( 'num_epochs' , d = 100 , h = 'Number of training epochs'              )
+        self.add_int( 'eval_every' , d =   5 , h = 'Interval between epochs for evaluation' )
+
+    def add_num_epochs_eval_plot_every( self ):
+
+        self.add_num_epochs_eval_every()
+        self.add_int( 'plot_every' , d =  -1 , h = 'Interval between evaluations for plotting' )
+

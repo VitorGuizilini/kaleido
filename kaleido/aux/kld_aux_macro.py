@@ -1,27 +1,23 @@
 
+import collections
 import numpy as np
 from kaleido.chk import *
 from kaleido.lst import *
+from kaleido.cvt import *
 
 ### NDIG
 def ndig( n ):
     return len( str( n ) )
 
-### SHAPE
-def shape( data ):
-    shape = []
-    while is_lst( data ):
-        shape.append( len( data ) )
-        data = data[0]
-    if is_npy( data ):
-        shape.append( data.shape )
-    return tuple( flatten( shape ) )
-
-### TO BOL
-def to_bol( v ):
-    if v in [True,'True','true',1,'1','T','t']: return True
-    if v in [False,'False','false',0,'0','F','f']: return False
+### ORDER
+def order( data ):
+    if is_dct( data ):
+        return collections.OrderedDict( sorted( data.items() ) )
     return None
+
+### MERGE DICTS
+def merge_dicts( *dicts ):
+    return { k : v for d in dicts for k , v in d.items() }
 
 ### VARTYPE
 def vartype( v , vartype = None , short = False ):
@@ -38,10 +34,6 @@ def vartype( v , vartype = None , short = False ):
         if vartype in ['STR','string']: return str( v )
         if vartype in ['BOL','bool']:   return to_bol( v )
         if vartype in ['NOT',None]:     return None
-
-### MERGE DICTS
-def merge_dicts( *dicts ):
-    return { k : v for d in dicts for k , v in d.items() }
 
 ### IDX SAMPLE
 def idx_sample( n , t , st = 0 , fn = 0 ):

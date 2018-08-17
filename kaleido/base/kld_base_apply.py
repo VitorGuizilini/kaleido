@@ -3,8 +3,8 @@ from kaleido.chk import *
 from kaleido.aux import *
 import functools
 
-### PARTIAL
-def partial( fn , *args , **kwargs ):
+### INIT
+def init( fn , *args , **kwargs ):
     return functools.partial( fn , *args , **kwargs )
 
 ### PROCESS

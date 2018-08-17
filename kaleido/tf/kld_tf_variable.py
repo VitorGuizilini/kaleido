@@ -20,7 +20,7 @@ def variable( shape , name , pref = '' , **args ):
             else: new_key = key[ len(pref)+1: ]
             if    new_key == 'init': new_key = 'initializer'
             elif  new_key == 'regl': new_key = 'regularizer'
-            if    new_key == 'initializer': dict[ new_key ] = kld.tf.apply_init( args[ key ] )
-            elif  new_key == 'regularizer': dict[ new_key ] = kld.tf.apply_init( args[ key ] )
+            if    new_key == 'initializer': dict[ new_key ] = kld.tf.init( args[ key ] )
+            elif  new_key == 'regularizer': dict[ new_key ] = kld.tf.init( args[ key ] )
             else: dict[ new_key ] = args[ key ]
     return tf.get_variable( shape = shape , name = name , **dict )

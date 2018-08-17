@@ -17,3 +17,14 @@ def typ2str( v ):
     if v == list:  return 'list'
     return 'none'
 
+### TO BOL
+def to_bol( v ):
+    if v in [True,'True','true',1,'1','T','t']: return True
+    if v in [False,'False','false',0,'0','F','f']: return False
+    return None
+
+### dt2sl
+def dt2sl( str ):
+    return str.replace( '.' , '/' )
+
+

@@ -11,12 +11,7 @@ class Batch:
     ### __INIT__
     def __init__( self , data = None , batch_size = 1 , multiple = False ):
 
-        self.data , self.type = [] , None
-
         if not multiple: data = [ data ]
-        if is_lst( data[0] ): self.type = 'lst'
-        if is_npy( data[0] ): self.type = 'npy'
-
         self.multiple , self.data = multiple , data
         self.set_batch_size( batch_size )
         self.reset( shuffle = False )
@@ -24,15 +19,18 @@ class Batch:
     ### GETTERS
     def batch_size( self ):  return self.b
     def num_batches( self ): return self.n
-    def all( self ): return self.data
-    def size( self ):
-        if self.type == 'lst': return len( self.data[0] )
-        if self.type == 'npy': return self.data[0].shape[0]
+    def size( self ): return len( self.data[0] )
     def width( self ): return len( self.data )
+    def all( self ):
+        return self.data[0] if not self.multiple else self.data
     def entry( self , d , n = None ):
         return self.data[d][n] if n is not None else self.data[d]
     def __getitem__( self , d ):
-        return self.data[d]
+        return self.entry( d )
+
+    ### RANGES
+    def range_batches( self ): return range( self.num_batches() )
+    def range_size( self ): return range( self.size() )
 
     ### SETTERS
     def set_batch_size( self , b ):
@@ -55,9 +53,10 @@ class Batch:
         return shape
 
     ### SLICE DATA
-    def slice_data( self , idx , n = None ):
-        if self.type is 'lst': return [ self.data[n][i] for i in idx ]
-        if self.type is 'npy': return self.data[n][idx]
+    def slice_data( self , idx , n ):
+        if is_lst( self.data[n] ): return [ self.data[n][i] for i in idx ]
+        if is_npy( self.data[n] ): return self.data[n][idx]
+        return None
 
     ### NEXT_BATCH
     def next_batch( self , b = None ):

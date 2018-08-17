@@ -22,8 +22,8 @@ class Saver:
 
     ### RESTORE MODEL
     def restore_model( self , name , vars = None ):
-        if self.path is None:  kld.tf.initialize( self.sess , vars ) ; return
-        if name is None: return
+        if self.path is None: kld.tf.initialize( self.sess , vars ) ; return
+        if name is None: kld.tf.initialize( self.sess , vars ) ; return
         if name not in self.stored: self.start_model( name , vars )
         saver , vars , path = self.stored[name]
         if tf.train.checkpoint_exists( path ):
@@ -41,6 +41,7 @@ class Saver:
         if kld.chk.is_tup( name ):
             for item in name: self.start_model( item )
         else:
+            if vars is not None and kld.chk.is_str( vars ): vars = kld.tf.global_vars( vars )
             path = self.path + ( '/models/' if not self.free else '/' ) + name ; kld.pth.mkdir( path )
             self.stored[name] = [ tf.train.Saver( max_to_keep = max_to_keep ,
                                                   var_list  = vars ) , vars , path + '/kld_model' ]
@@ -101,7 +102,8 @@ class Saver:
             for i in kld.aux.rlen( name ):
                 self.start_file( name[i] , files[i] )
         else:
-            path = self.path + ( '/files/' if not self.free else '/' ) + name + '/'
+            path = self.path + '/files/' if not self.free else '/'
+            if name != '': path += name + '/'
             kld.pth.mkdir( path )
             self.stored[name] = [ files , path ]
 
@@ -113,7 +115,9 @@ class Saver:
                 self.file( name[i] , files[i] )
         else:
             if name not in self.stored: self.start_file( name , files )
-            files , path = self.stored[name]
+            nfiles , path = self.stored[name]
+            if files is None: files = nfiles
+            else: files = self.stored[name][0] = list( set( nfiles + kld.lst.make( files ) ) )
             for file in files:
                 dest = file.split('/')[-1]
                 if file[-3] == '.':
@@ -219,7 +223,7 @@ class Saver:
     def save_dict( self , path , data , struct ):
         if data is not None:
             with open( path , 'w' ) as file:
-                for key in data:
+                for key in sorted( data ):
                     file.write( '--' + key + ' ' )
                     value = data[key]
                     if kld.chk.is_lst( value ):

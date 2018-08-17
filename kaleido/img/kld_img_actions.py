@@ -4,7 +4,6 @@ import random
 import numpy as np
 import kaleido as kld
 from kaleido.chk import *
-from kaleido.rnd import *
 
 ########################### TUPLES
 
@@ -48,8 +47,9 @@ def prep_tuple( val , shape , no_zero = True , swap = False ):
 
 ### PREP INTERP
 def prep_interp( interp ):
-    if interp == 'nearest': interp = cv2.INTER_NEAREST
-    if interp == 'linear' : interp = cv2.INTER_LINEAR
+    if interp == 'nearest'  : interp = cv2.INTER_NEAREST
+    if interp == 'bilinear' : interp = cv2.INTER_LINEAR
+    if interp == 'bicubic'  : interp = cv2.INTER_CUBIC
     return interp
 
 ########################### RESIZES
@@ -130,8 +130,8 @@ def do_rotate( image , angle , center , fit , **kwargs ):
         return cv2.warpAffine(image , M , size , **kwargs )
 ### ROTATE
 def rotate( image , angle , center = 0.5 , prob = None , fit = False , **kwargs ):
-    if prob is not None and kld.aux.randf() < prob: return image
-    if kld.chk.is_lst( angle ): angle = kld.aux.randf( angle[0] , angle[1] )
+    if prob is not None and kld.rnd.f() < prob: return image
+    if kld.chk.is_lst( angle ): angle = kld.rnd.f( angle[0] , angle[1] )
     if angle == 0.0: return image
     center = prep_tuple( 0.5 if fit else center , image , no_zero = False , swap = True )
     return kld.process( image , do_rotate , angle , center , fit , **kwargs )
@@ -147,10 +147,10 @@ def do_math( image , add , mlt , sat ):
     return image
 ### MATH
 def math( image , add = 0.0 , mlt = 1.0 , sat = None , prob = None ):
-    if prob is not None and kld.aux.randf() < prob: return image
+    if prob is not None and kld.rnd.f() < prob: return image
     if add == 0.0 and mlt == 1.0: return image
-    if kld.chk.is_lst( add ): add = kld.aux.randf( add[0] , add[1] )
-    if kld.chk.is_lst( mlt ): mlt = kld.aux.randf( mlt[0] , mlt[1] )
+    if kld.chk.is_lst( add ): add = kld.rnd.f( add[0] , add[1] )
+    if kld.chk.is_lst( mlt ): mlt = kld.rnd.f( mlt[0] , mlt[1] )
     return kld.process( image , do_math , add , mlt , sat )
 
 ########################### CONVERTS

@@ -1,11 +1,16 @@
 
-import tensorflow as tf
+from tqdm import tqdm
 from kaleido.aux import *
 
 ### COUNT
 def count( name , num , max , post = '' ):
     mask = '{name}: {num:>{pad}d}{post}'
     return mask.format( name = name , num = num , pad = ndig( max ) , post = post )
+
+### LOOPBAR
+def loopBar( data , text , width = 100 , leave = True , enum = False ):
+    bar = tqdm( data , '| ' + text + ' |' , ncols = width , leave = leave )
+    return enumerate( bar ) if enum else bar
 
 ### PAD
 def padc( val , pad , prev = '' , post = '' ):
