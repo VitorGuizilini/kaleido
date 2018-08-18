@@ -1,4 +1,5 @@
 
+import numpy as np
 from kaleido.aux import *
 from kaleido.chk import *
 

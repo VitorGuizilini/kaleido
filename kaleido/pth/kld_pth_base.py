@@ -3,7 +3,10 @@ import os
 import sys
 import inspect
 import importlib
-import kaleido as kld
+import tensorflow as tf
+from kaleido.chk import *
+from kaleido.cvt import *
+from kaleido.pth import *
 
 ### MKDIR
 def mkdir( folder ):
@@ -42,7 +45,14 @@ def nameruncurr():
 ### MODULE
 def module( file , attr = None ):
     mod = importlib.import_module( file )
-    return mod if attr is None else getattr( mod , attr )
+    if attr is not None and not is_str( attr ): attr.file( '' , dt2sl( file ) + '.py' )
+    return mod if ( attr is None or not is_str( attr ) ) else getattr( mod , attr )
+
+### VRSMODULE
+def vrsmodule( scope , version , saver ):
+    name = callernames(1)[0].split('_')[0]
+    file = 'vrs_%s.%s_vrs_%s%s' % ( scope.lower() , name , scope.lower() , version )
+    return module( file , saver )
 
 ### CALLERNAME
 def callername( n = 0 ):

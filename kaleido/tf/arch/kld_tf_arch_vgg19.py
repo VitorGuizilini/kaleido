@@ -48,7 +48,7 @@ class vgg19:
     def postprocess( self , input ):
         return input + self.mean_pixel
 
-    ### FEED FORWARD
+    ### BUILD
     def build( self , input , name = None , preprocess = True ):
 
         if preprocess:

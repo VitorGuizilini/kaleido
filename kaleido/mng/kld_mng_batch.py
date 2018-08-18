@@ -21,12 +21,13 @@ class Batch:
     def num_batches( self ): return self.n
     def size( self ): return len( self.data[0] )
     def width( self ): return len( self.data )
-    def all( self ):
-        return self.data[0] if not self.multiple else self.data
-    def entry( self , d , n = None ):
-        return self.data[d][n] if n is not None else self.data[d]
+##    def all( self ):
+##        return self.data[0] if not self.multiple else self.data
+#    def entry( self , d , n = None ):
+#        return self.data[d][n] if n is not None else self.data[d]
     def __getitem__( self , d ):
-        return self.entry( d )
+        if self.multiple: return self.data[d]
+        else: return self.data[0][d]
 
     ### RANGES
     def range_batches( self ): return range( self.num_batches() )

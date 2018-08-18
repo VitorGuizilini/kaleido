@@ -9,6 +9,7 @@ def iter_to( i , n , tot = None ):
         do = i >= tot
     return do
 
+### FOR HASBIGGER
 def for_hasbigger( xx , v = 0 ):
     for x in xx:
         if len( x ) > v: return True

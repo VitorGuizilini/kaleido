@@ -9,6 +9,7 @@ import kaleido.lst
 import kaleido.mng
 import kaleido.plt
 import kaleido.pth
+import kaleido.rnd
 import kaleido.stt
 import kaleido.tf
 

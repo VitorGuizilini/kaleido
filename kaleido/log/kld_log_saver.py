@@ -35,6 +35,11 @@ class Saver:
             str = '###### MODEL NOT RESTORED... ' + kld.pth.dir( path )
             print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
 
+    ### RESTORE SCOPE
+    def restore_scope( self ):
+        name = tf.contrib.framework.get_name_scope()
+        self.restore_model( name.lower() , name )
+
     ### START MODEL
     def start_model( self , name , vars = None , max_to_keep = 1 ):
         if self.path is None: return

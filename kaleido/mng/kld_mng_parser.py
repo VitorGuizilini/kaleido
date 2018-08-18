@@ -252,12 +252,13 @@ class Parser:
 
     def add_lst( self , name , t , d = None , c = None , h = None ): self.add( name, t , '+' , d , c , len(t) , h , False )
 
-    def add_load_save_train_restart( self ):
+    def add_version_load_save_train_restart( self ):
 
-        self.add_str( 'load'    , d = None  , h = 'Path to logs folder to load' )
-        self.add_str( 'save'    , d = None  , h = 'Path to logs folder to save' )
-        self.add_bol( 'train'   , d = False , h = 'Flag for Training/Testing'   )
-        self.add_bol( 'restart' , d = False , h = 'Flag for save model restart' )
+        self.add_rstr( 'version' , d = None  , h = 'Version to be used'          )
+        self.add_str(  'load'    , d = None  , h = 'Path to logs folder to load' )
+        self.add_str(  'save'    , d = None  , h = 'Path to logs folder to save' )
+        self.add_bol(  'train'   , d = False , h = 'Flag for Training/Testing'   )
+        self.add_bol(  'restart' , d = False , h = 'Flag for save model restart' )
 
     def add_num_epochs_eval_every( self ):
 
