@@ -55,6 +55,11 @@ class Parser:
                 if name in self.inputs:
                     print( '### KALEIDO ERROR: REPEATED ARGUMENT (%s)' % name ); exit()
                 else: self.inputs[name] = input
+            elif args[0] == '--':
+                if len( args ) > 1:
+                    print( '### KALEIDO ERROR: EXTRA SPACE (-- %s)' % args[1] ); exit()
+                else:
+                    print( '### KALEIDO ERROR: EMPTY ENTRY (--)' ); exit()
 
         load = None
         if 'args' in self.inputs and self.inputs['args'] is not None:
