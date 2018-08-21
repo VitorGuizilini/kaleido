@@ -69,6 +69,11 @@ class Saver:
             saver , vars , path = self.stored[name]
             saver.save( self.sess , path )
 
+    ### SCOPE
+    def scope( self , scope = None ):
+        if scope is None: scope = kld.tf.get_varscope()
+        self.model( scope.lower() , scope )
+
 ############################################ IMAGE
 
     ### START IMAGE
