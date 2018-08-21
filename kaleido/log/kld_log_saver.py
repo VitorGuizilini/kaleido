@@ -273,3 +273,10 @@ class Saver:
         return self.access( name , data , self.start_dict , self.save_dict )
     def args( self , name , data = None ):
         return self.dict( name ) if data is None else self.dict( name , data.__dict__ )
+
+##########################################################################3
+
+##### FREESAVER
+class FreeSaver( Saver ):
+    def __init__( self , path , sess = None , restart = False ):
+        Saver.__init__( self , path , sess , restart , free = True )

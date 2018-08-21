@@ -48,9 +48,9 @@ def prep_tuple( val , shape , no_zero = True , swap = False ):
 
 ### PREP INTERP
 def prep_interp( interp ):
-    if interp == 'nearest'  : interp = cv2.INTER_NEAREST
-    if interp == 'bilinear' : interp = cv2.INTER_LINEAR
-    if interp == 'bicubic'  : interp = cv2.INTER_CUBIC
+    if interp == 'nearest'  or interp == 0 : interp = cv2.INTER_NEAREST
+    if interp == 'bilinear' or interp == 1 : interp = cv2.INTER_LINEAR
+    if interp == 'bicubic'  or interp == 2 : interp = cv2.INTER_CUBIC
     return interp
 
 ########################### RESIZES
@@ -59,7 +59,8 @@ def prep_interp( interp ):
 def do_resize( image , size , interp , **kwargs ):
     return cv2.resize( image , size , interpolation = interp , **kwargs )
 ### RESIZE
-def resize( image , size , interp = 'nearest' , **kwargs ):
+def resize( image , size , interp = 0 , prob = None , **kwargs ):
+    if prob is not None and kld.rnd.f() < prob: return image
     size , interp = prep_tuple( size , image , swap = True ) , prep_interp( interp )
     return kld.process( image , do_resize , size , interp , **kwargs )
 
@@ -109,7 +110,7 @@ def crop( image , size , center = None , prob = None ):
 ########################### ROTATES
 
 ### DO ROTATE
-def do_rotate( image , angle , center , fit , **kwargs ):
+def do_rotate( image , angle , center , interp , fit , **kwargs ):
     if angle == 90:
         axes = [ 1 , 0 , 2 ] if len( image.shape ) == 3 else [ 1 , 0 ]
         return np.transpose( image , axes )
@@ -128,14 +129,15 @@ def do_rotate( image , angle , center , fit , **kwargs ):
                      int( abs( sinr * size[0] ) + abs( cosr * size[1] ) ) )
             M[0,2] += ( size[0] - old_size[0] ) / 2
             M[1,2] += ( size[1] - old_size[1] ) / 2
-        return cv2.warpAffine(image , M , size , **kwargs )
+        return cv2.warpAffine(image , M , size , flags = interp , **kwargs )
 ### ROTATE
-def rotate( image , angle , center = 0.5 , prob = None , fit = False , **kwargs ):
+def rotate( image , angle , center = 0.5 , interp = 0 , fit = False , prob = None , **kwargs ):
     if prob is not None and kld.rnd.f() < prob: return image
     if kld.chk.is_lst( angle ): angle = kld.rnd.f( angle[0] , angle[1] )
     if angle == 0.0: return image
+    interp = prep_interp( interp )
     center = prep_tuple( 0.5 if fit else center , image , no_zero = False , swap = True )
-    return kld.process( image , do_rotate , angle , center , fit , **kwargs )
+    return kld.process( image , do_rotate , angle , center , interp , fit , **kwargs )
 
 ########################### MATHS
 

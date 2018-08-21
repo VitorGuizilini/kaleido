@@ -10,7 +10,6 @@ if [ "$#" -eq 0 ]; then
     
 else
 
-
     DATASET=$1.tar.gz
     FOLDER='logs'
     WEBSITE='https://pykaleido.000webhostapp.com/logs/'
