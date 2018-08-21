@@ -9,7 +9,7 @@ class Thread:
         self.data , self.n = lst , n
 
         d = len( lst )
-        b = int( d / n )
+        b = d // n
 
         self.lst = [ [] for _ in range( d ) ]
 

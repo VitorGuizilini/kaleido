@@ -1,5 +1,6 @@
 
 import kaleido.aux
+import kaleido.dec
 import kaleido.chk
 import kaleido.cvt
 import kaleido.dsp
@@ -15,5 +16,5 @@ import kaleido.tf
 
 from kaleido.base.kld_base_apply import *
 from kaleido.base.kld_base_short import *
-
+from kaleido.base.kld_base_vrs   import *
 

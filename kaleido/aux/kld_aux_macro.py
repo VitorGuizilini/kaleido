@@ -38,7 +38,7 @@ def vartype( v , vartype = None , short = False ):
 ### IDX SAMPLE
 def idx_sample( n , t , st = 0 , fn = 0 ):
     n , t = n - 1 , t - st - fn
-    r , m = t % n , int( t / n )
+    r , m = t % n , t // n
     idx = np.arange( 0 , t - r + 1 , m )
     if r > 0:
         add = np.ceil( np.arange( 1 , n , n / r ) ).astype( np.int32 )
@@ -54,6 +54,3 @@ def round( x , thr = 0.5 ):
     y[ x > thr ] = 1
     return y
 
-### REMSPACE
-def remspace( x , s = '' ):
-    return str( x ).replace( ' ' , s )

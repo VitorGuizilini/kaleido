@@ -1,6 +1,7 @@
 
 import os
 import tensorflow as tf
+from tensorflow.python.tools.inspect_checkpoint import print_tensors_in_checkpoint_file
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import numpy as np
 from kaleido.chk import *
@@ -10,6 +11,22 @@ from kaleido.chk import *
 ### SESSION
 def Session():
     return tf.Session()
+
+########################################################
+
+### GET VARSCOPE
+def get_varscope():
+    return tf.get_variable_scope()._name
+
+### SET VARSCOPE
+def set_varscope( scope ):
+    old = get_varscope()
+    tf.get_variable_scope()._name = scope
+    return old
+
+### SET REUSE
+def set_reuse( flag ):
+    tf.get_variable_scope()._reuse = flag
 
 ########################################################
 
@@ -32,20 +49,30 @@ def num_trainable_params():
 def all_tensors():
     return [ n for n in tf.get_default_graph().as_graph_def().node ]
 
-### PRINT ALL TENSOR NAMES
-def print_all_tensor_names():
+### PTENSOR NAMES
+def ptensor_names():
     tensors = all_tensors()
     for t in tensors: print( t.name )
+
+### PTENSORS CHECKPOINT
+def ptensors_checkpoint( path ):
+    print_tensors_in_checkpoint_file( file_name = path , tensor_name = '' , all_tensors = False )
 
 ########################################################
 
 ### GLOBAL VARS
 def global_vars( scope = None ):
     return tf.get_collection( tf.GraphKeys.GLOBAL_VARIABLES , scope = scope )
+def pglobal_vars( scope = None ):
+    for var in global_vars( scope ):
+        print( var )
 
 ### TRAINABLE VARS
 def trainable_vars( scope = None ):
     return tf.get_collection( tf.GraphKeys.TRAINABLE_VARIABLES , scope = scope )
+def ptrainable_vars( scope = None ):
+    for var in trainable_vars( scope ):
+        print( var )
 
 ### UPDATE OPS
 def update_ops( scope = None ):

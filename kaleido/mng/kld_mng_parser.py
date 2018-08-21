@@ -252,9 +252,9 @@ class Parser:
 
     def add_lst( self , name , t , d = None , c = None , h = None ): self.add( name, t , '+' , d , c , len(t) , h , False )
 
-    def add_version_load_save_train_restart( self ):
+    def add_vrs_load_save_train_restart( self ):
 
-        self.add_rstr( 'version' , d = None  , h = 'Version to be used'          )
+        self.add_rstr( 'vrs'     , d = None  , h = 'Version to be used'          )
         self.add_str(  'load'    , d = None  , h = 'Path to logs folder to load' )
         self.add_str(  'save'    , d = None  , h = 'Path to logs folder to save' )
         self.add_bol(  'train'   , d = False , h = 'Flag for Training/Testing'   )

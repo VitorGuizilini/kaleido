@@ -19,6 +19,9 @@ class baseA:
         self.saver.args( 'args' , args )
         self.build( args )
 
+        try: args.plot_every *= args.eval_every
+        except: pass
+
     ### LOOPEPOCH
     def loopEpoch( self , data , epoch , leave = True , enum = False ):
         text = kld.dsp.count( 'Epoch' , epoch , self.args.num_epochs )

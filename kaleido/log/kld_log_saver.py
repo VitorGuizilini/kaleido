@@ -14,7 +14,7 @@ class Saver:
         self.path , self.sess , self.stored , self.free = path , sess , {} , free
         if restart: self.restart()
 
-    ### CLEAR IMAGE
+    ### RESTART
     def restart( self ):
         kld.log.restart( self.path )
 
@@ -27,18 +27,23 @@ class Saver:
         if name not in self.stored: self.start_model( name , vars )
         saver , vars , path = self.stored[name]
         if tf.train.checkpoint_exists( path ):
-            saver.restore( self.sess , path )
-            str = '###### MODEL RESTORED!!! ' + kld.pth.dir( path )
-            print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
+            try:
+                saver.restore( self.sess , path )
+                str = '###### MODEL RESTORED!!! ' + kld.pth.dir( path )
+                print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
+            except:
+                kld.tf.initialize( self.sess , vars )
+                str = '###### MODEL DOES NOT FIT!!! ' + kld.pth.dir( path )
+                print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
         else:
             kld.tf.initialize( self.sess , vars )
-            str = '###### MODEL NOT RESTORED... ' + kld.pth.dir( path )
+            str = '###### MODEL NOT FOUND... ' + kld.pth.dir( path )
             print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
 
     ### RESTORE SCOPE
-    def restore_scope( self ):
-        name = tf.contrib.framework.get_name_scope()
-        self.restore_model( name.lower() , name )
+    def restore_scope( self , scope = None ):
+        if scope is None: scope = kld.tf.get_varscope()
+        self.restore_model( scope.lower() , scope )
 
     ### START MODEL
     def start_model( self , name , vars = None , max_to_keep = 1 ):
@@ -91,10 +96,12 @@ class Saver:
             if suffix is not None: path += '/' + kld.lst.merge_str( suffix )
             path += '.png'
             if kld.chk.is_npy( plt ):
-                if plt.dtype == np.float32: plt = ( plt * 255.0 ).astype( np.uint8 )
+                if plt.dtype == np.float32:
+                    if np.max( plt ) <= 1.0: plt = plt * 255.0
+                    plt = plt.astype( np.uint8 )
                 if len( plt.shape ) == 3 and plt.shape[2] == 3:
                     cv2.imwrite( path , plt[:,:,::-1] )
-                else:cv2.imwrite( path , plt )
+                else: cv2.imwrite( path , plt )
             else: plt.savefig( path )
 
 ############################################ FILE

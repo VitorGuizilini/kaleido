@@ -38,7 +38,7 @@ class Batch:
         self.b = b ; self.set_num_batches()
         return self.num_batches()
     def set_num_batches( self ):
-        self.n = int( self.size() / self.batch_size() )
+        self.n = self.size() // self.batch_size()
     def __setitem__( self , d , v ): self.data[d] = v
 
     ### RESET

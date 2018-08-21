@@ -3,7 +3,6 @@ import os
 import sys
 import inspect
 import importlib
-import tensorflow as tf
 from kaleido.chk import *
 from kaleido.cvt import *
 from kaleido.pth import *
@@ -48,12 +47,6 @@ def module( file , attr = None ):
     if attr is not None and not is_str( attr ): attr.file( '' , dt2sl( file ) + '.py' )
     return mod if ( attr is None or not is_str( attr ) ) else getattr( mod , attr )
 
-### VRSMODULE
-def vrsmodule( scope , version , saver ):
-    name = callernames(1)[0].split('_')[0]
-    file = 'vrs_%s.%s_vrs_%s%s' % ( scope.lower() , name , scope.lower() , version )
-    return module( file , saver )
-
 ### CALLERNAME
 def callername( n = 0 ):
     frame = inspect.stack()[ n + 1 ]
@@ -63,3 +56,7 @@ def callername( n = 0 ):
 ### CALLERNAMES
 def callernames( fn ):
     return [ callername( i ) for i in range( 3 , fn + 3 ) ]
+
+### FUNCNAME
+def funcname():
+    return inspect.stack()[1][3]

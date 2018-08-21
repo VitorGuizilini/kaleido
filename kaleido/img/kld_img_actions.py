@@ -20,7 +20,8 @@ def valcalc( val , dim ):
 def valscale( val , shape ):
     big = max( shape[0] , shape[1] )
     if val < 0: val = val + big + 1
-    return ( int( shape[0] * val / big ) , int( shape[1] * val / big ) )
+    return ( int( shape[0] * val / big ) ,
+             int( shape[1] * val / big ) )
 
 ########################### PREPS
 

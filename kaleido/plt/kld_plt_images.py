@@ -66,7 +66,7 @@ def block( r , c , images , order = None ):
 ### SEQUENCE
 def sequence( g , x , y , p , nr ):
 
-    nc = int( p.shape[0] / nr )
+    nc = p.shape[0] // nr
     x = np.reshape( x , [ nr , nc , -1 , 1 ] )
     p = np.reshape( p , [ nr , nc , -1 , 1 ] )
     y = np.reshape( y , [ nr , nc , -1 , 1 ] )
