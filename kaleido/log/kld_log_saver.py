@@ -26,18 +26,19 @@ class Saver:
         if name is None: kld.tf.initialize( self.sess , vars ) ; return
         if name not in self.stored: self.start_model( name , vars )
         saver , vars , path = self.stored[name]
-        if tf.train.checkpoint_exists( path ):
+        dir = kld.pth.dir( path )
+        if kld.pth.exists( dir ) and tf.train.checkpoint_exists( path ):
             try:
                 saver.restore( self.sess , path )
-                str = '###### MODEL RESTORED!!! ' + kld.pth.dir( path )
+                str = '###### MODEL RESTORED!!! ' + dir
                 print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
             except:
                 kld.tf.initialize( self.sess , vars )
-                str = '###### MODEL DOES NOT FIT!!! ' + kld.pth.dir( path )
+                str = '###### MODEL DOES NOT FIT!!! ' + dir
                 print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
         else:
             kld.tf.initialize( self.sess , vars )
-            str = '###### MODEL NOT FOUND... ' + kld.pth.dir( path )
+            str = '###### MODEL NOT FOUND... ' + dir
             print( '=' * len( str ) + '\n' + str + '\n' + '=' * len( str ) )
 
     ### RESTORE SCOPE
@@ -52,7 +53,7 @@ class Saver:
             for item in name: self.start_model( item )
         else:
             if vars is not None and kld.chk.is_str( vars ): vars = kld.tf.global_vars( vars )
-            path = self.path + ( '/models/' if not self.free else '/' ) + name ; kld.pth.mkdir( path )
+            path = self.path + ( '/models/' if not self.free else '/' ) + name
             self.stored[name] = [ tf.train.Saver( max_to_keep = max_to_keep ,
                                                   var_list  = vars ) , vars , path + '/kld_model' ]
 
@@ -67,6 +68,7 @@ class Saver:
                 if restore: self.restore_model( name , vars )
                 else: self.start_model( name , vars )
             saver , vars , path = self.stored[name]
+            kld.pth.mkdir( kld.pth.dir( path ) )
             saver.save( self.sess , path )
 
     ### SCOPE
@@ -176,7 +178,7 @@ class Saver:
             value = fnload( path )
             self.stored[name][0] = value
             return value
-        else: return fnaccess( name , default )
+        else: return default
 
     def restore_scalar( self , name , default ):
         return self.restore( name , default , self.load_scalar , self.scalar )
@@ -200,7 +202,7 @@ class Saver:
                 values.append( self.start( name[i] , defaulti , fnstart , fnrestore , ext ) )
             return values
         else:
-            path = self.path + ( '/data/' if not self.free else '/' ) ; kld.pth.mkdir( path )
+            path = self.path + ( '/data/' if not self.free else '/' )
             self.stored[name] = [ [] , path + name + ext ]
             return fnrestore( name , default )
 
@@ -265,6 +267,7 @@ class Saver:
             if name not in self.stored: fnstart( name , None )
             struct , path = self.stored[name]
             if data is not None:
+                kld.pth.mkdir( kld.pth.dir( path ) )
                 self.stored[name][0] = fnsave( path , data , struct )
             return self.stored[name][0]
 

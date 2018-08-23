@@ -2,6 +2,7 @@
 import numpy as np
 import kaleido as kld
 
+### VARSCOPE
 def varscope( scope ):
     def secondary( function ):
         def wrapper( *args , **kwargs ):

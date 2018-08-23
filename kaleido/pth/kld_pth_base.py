@@ -15,6 +15,10 @@ def mkdir( folder ):
 def rmfile( file ):
     if os.path.isfile( file ): os.remove( file )
 
+### EXISTS
+def exists( path ):
+    return os.path.exists( path )
+
 ### LEVEL
 def level( path , n = 0 ):
     return path.split('/')[-n-1]

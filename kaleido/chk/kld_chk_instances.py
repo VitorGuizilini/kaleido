@@ -35,9 +35,3 @@ def is_type( x , t ):
     try: t( x ) ; return True
     except: return False
 
-#def convert( x ):
-#    try: x = float( x )
-#    except: x = x
-##    if x.is_integer(): x = int( x )
-##    print( '333' , x )
-#    return x

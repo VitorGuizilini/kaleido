@@ -24,10 +24,3 @@ def load( file , color = None , ops = None ):
         if color == 'hsv': image = cv2.cvtColor( image , cv2.COLOR_BGR2HSV )
         if color == 'lab': image = cv2.cvtColor( image , cv2.COLOR_BGR2LAB )
         return kld.apply( image , ops )
-
-#### LOAD SHAPE
-#def load_shape( file , params ):
-#    params = make_params( params )
-#    return list( kld.img.load( file , params ).shape )
-
-

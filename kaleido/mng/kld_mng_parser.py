@@ -257,18 +257,19 @@ class Parser:
 
     def add_lst( self , name , t , d = None , c = None , h = None ): self.add( name, t , '+' , d , c , len(t) , h , False )
 
-    def add_vrs_load_save_train_restart( self ):
+    def add_vrs_load_save_train_restart_store( self ):
 
         self.add_rstr( 'vrs'     , d = None  , h = 'Version to be used'          )
         self.add_str(  'load'    , d = None  , h = 'Path to logs folder to load' )
         self.add_str(  'save'    , d = None  , h = 'Path to logs folder to save' )
         self.add_bol(  'train'   , d = False , h = 'Flag for Training/Testing'   )
         self.add_bol(  'restart' , d = False , h = 'Flag for save model restart' )
+        self.add_bol(  'store'   , d = False , h = 'Store data when testing'     )
 
     def add_num_epochs_eval_every( self ):
 
         self.add_int( 'num_epochs' , d = 100 , h = 'Number of training epochs'              )
-        self.add_int( 'eval_every' , d =   5 , h = 'Interval between epochs for evaluation' )
+        self.add_int( 'eval_every' , d =  10 , h = 'Interval between epochs for evaluation' )
 
     def add_num_epochs_eval_plot_every( self ):
 
