@@ -5,6 +5,7 @@ from tensorflow.contrib.framework.python.framework import checkpoint_utils
 from tensorflow.python.tools.inspect_checkpoint import print_tensors_in_checkpoint_file
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import numpy as np
+import kaleido as kld
 from kaleido.chk import *
 
 ########################################################
@@ -63,27 +64,35 @@ def vars2consts( nodes , sess ):
                         tf.get_default_graph().as_graph_def() , nodes )
 
 ### SAVE CONSTS
-def save_consts( name , consts ):
+def save_consts( name , consts , encrypt = False ):
     with tf.gfile.GFile( name , "wb" ) as f:
-        f.write( consts.SerializeToString() )
+        data = consts.SerializeToString()
+        if encrypt: data = kld.cry.encrypt( data )
+        f.write( data )
 
 ### FREEZE
-def freeze( path , name ):
+def freeze( path , name , encrypt = False ):
     sess = Session()
     restore_meta( path , sess )
     nodes = [ tsr.name for tsr in tensors() if 'KLD_Nodes' in tsr.name ]
     consts = vars2consts( nodes , sess )
-    save_consts( name , consts )
+    save_consts( name , consts , encrypt )
     return nodes , sess
+def freezecry( path , name ):
+    return freeze( path , name , encrypt = True )
 
 ### UNFREEZE
-def unfreeze( name ):
+def unfreeze( name , decrypt = False ):
     with tf.gfile.GFile( name , "rb" ) as f:
-        graph_def = tf.GraphDef()
-        graph_def.ParseFromString( f.read() )
+        data = f.read()
+        if decrypt: data = kld.cry.decrypt( data )
+    graph_def = tf.GraphDef()
+    graph_def.ParseFromString( data )
     with tf.Graph().as_default() as graph:
         tf.import_graph_def( graph_def , name = 'frozen' )
     return frozen_nodes( graph ) , Session( graph )
+def unfreezecry( name ):
+    return unfreeze( name , decrypt = True )
 
 ### NODES TO FREEZE
 def nodes_to_freeze( *nodes ):

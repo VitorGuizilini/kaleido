@@ -2,6 +2,7 @@
 import kaleido.aux
 import kaleido.dec
 import kaleido.chk
+import kaleido.cry
 import kaleido.cvt
 import kaleido.dsp
 import kaleido.img

@@ -53,15 +53,27 @@ def settings( grid = False , ticks = True , xlim = None , ylim = None ):
     kld.plot.grid( grid )
 
 ### BLOCK
-def block( r , c , images , order = None ):
+def block( rc , images , order = None ):
     plt.clf()
     if order is None: order = np.arange( len( images ) )
     for i , j in enumerate( order ):
         if j is not None:
-            plt.subplot(r,c,i+1)
+            plt.subplot( rc[0] , rc[1] , i + 1 )
             plt.imshow( images[j] , vmin = 0.0 , vmax = 1.0 , cmap = 'gray' )
             plt.axis('off')
     return plt
+
+### MOSAIC
+def mosaic( rc , images , order = None ):
+    h , w = images.shape[1] , images.shape[2]
+    d = 1 if len( images.shape ) == 3 else images.shape[3]
+    output = np.zeros( ( h * rc[0] , w * rc[1] , d ) )
+    for idx , image in enumerate( images ):
+        i , j = idx % rc[1] , idx // rc[1]
+        output[ j * h : j * h + h ,
+                i * w : i * w + w ] = image
+    return output
+
 
 ### SEQUENCE
 def sequence( g , x , y , p , nr ):
