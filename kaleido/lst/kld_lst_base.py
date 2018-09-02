@@ -17,6 +17,14 @@ def flatten( input ):
         else: output.append( input[i] )
     return output
 
+### FIRST
+def first( input , n , st = 0 ):
+    return input[st:n+st]
+
+### FIRST
+def last( input , n , fn = 0 ):
+    return input[n-fn:-fn]
+
 ### SAMPLE
 def sample( input , n , st = 0 , fn = 0 ):
     if n == 0: return input

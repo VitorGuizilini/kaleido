@@ -64,10 +64,10 @@ def block( rc , images , order = None ):
     return plt
 
 ### MOSAIC
-def mosaic( rc , images , order = None ):
-    h , w = images.shape[1] , images.shape[2]
-    d = 1 if len( images.shape ) == 3 else images.shape[3]
-    output = np.zeros( ( h * rc[0] , w * rc[1] , d ) )
+def mosaic( rc , images ):
+    shape = images[0].shape ; h , w = shape[0] , shape[1]
+    d = 1 if len( shape ) == 2 else shape[2]
+    output = np.zeros( ( h * rc[0] , w * rc[1] , d ) , dtype = images[0].dtype )
     for idx , image in enumerate( images ):
         i , j = idx % rc[1] , idx // rc[1]
         output[ j * h : j * h + h ,
