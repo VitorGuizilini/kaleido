@@ -1,6 +1,7 @@
 
 from kaleido.chk import *
 from kaleido.aux import *
+import kaleido as kld
 import functools
 
 ### INIT
@@ -34,17 +35,17 @@ def apply( data , ops , apply_type = 'ind' ):
     if nested( data ):
         if apply_type == 'ind':
             ndata = []
-            for i in rlen( data ):
-                ndata.append( [ do_ops( data[i][j] , ops ) for j in rlen( data , i ) ] )
+            for i in kld.rlen( data ):
+                ndata.append( [ do_ops( data[i][j] , ops ) for j in kld.rlen( data , i ) ] )
         elif apply_type == 'col':
             ndata = []
-            for i in rlen( data ):
+            for i in kld.rlen( data ):
                 ndata.append( do_ops( data[i] , ops ) )
         elif apply_type == 'row':
-            ndata = [ [] for i in rlen( data ) ]
-            for i in rlen( data , 0 ):
-                row = do_ops( [ data[j][i] for j in rlen( data ) ] , ops )
-                for j in rlen( data ): ndata[j].append( row[j] )
+            ndata = [ [] for i in kld.rlen( data ) ]
+            for i in kld.rlen( data , 0 ):
+                row = do_ops( [ data[j][i] for j in kld.rlen( data ) ] , ops )
+                for j in kld.rlen( data ): ndata[j].append( row[j] )
         return ndata
     elif is_lst( data ):
         return [ do_ops( d , ops ) for d in data ]

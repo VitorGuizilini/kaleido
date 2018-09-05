@@ -117,14 +117,14 @@ def graph():
 ### GLOBAL VARS
 def global_vars( scope = None ):
     return tf.get_collection( tf.GraphKeys.GLOBAL_VARIABLES , scope = scope )
-def pglobal_vars( scope = None ):
+def print_global_vars( scope = None ):
     for var in global_vars( scope ):
         print( var )
 
 ### TRAINABLE VARS
 def trainable_vars( scope = None ):
     return tf.get_collection( tf.GraphKeys.TRAINABLE_VARIABLES , scope = scope )
-def ptrainable_vars( scope = None ):
+def print_trainable_vars( scope = None ):
     for var in trainable_vars( scope ):
         print( var )
 

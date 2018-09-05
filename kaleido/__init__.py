@@ -14,6 +14,7 @@ import kaleido.pth
 import kaleido.rnd
 import kaleido.stt
 import kaleido.tf
+import kaleido.trf
 
 from kaleido.base.kld_base_apply import *
 from kaleido.base.kld_base_short import *

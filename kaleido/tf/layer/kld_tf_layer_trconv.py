@@ -8,7 +8,7 @@ def trconv( d , fn , input , name , channels , ksize , strides , shapeout = None
     name = kld.lst.merge_str( name )
     args = kld.aux.merge_dicts( kld.tf.layer.default , args )
 
-    if kld.chk.is_tensor( shapeout ):
+    if kld.chk.is_tsr( shapeout ):
         shapeout = kld.tf.shape( shapeout )
 
     ksize = kld.tf.layer.set_ksize( ksize , d )

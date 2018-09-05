@@ -1,9 +1,11 @@
 
 import cv2
+import scipy.misc
 import random
 import numpy as np
 import kaleido as kld
 from kaleido.chk import *
+
 
 ########################### TUPLES
 
@@ -47,22 +49,30 @@ def prep_tuple( val , shape , no_zero = True , swap = False ):
     return tuple( val ) if not swap else ( val[1] , val[0] )
 
 ### PREP INTERP
-def prep_interp( interp ):
-    if interp == 'nearest'  or interp == 0 : interp = cv2.INTER_NEAREST
-    if interp == 'bilinear' or interp == 1 : interp = cv2.INTER_LINEAR
-    if interp == 'bicubic'  or interp == 2 : interp = cv2.INTER_CUBIC
-    return interp
+def prep_interp( interp , lib = 'opencv' ):
+    if lib == 'opencv':
+        if interp == 'nearest'  or interp == 0 : return cv2.INTER_NEAREST
+        if interp == 'bilinear' or interp == 1 : return cv2.INTER_LINEAR
+        if interp == 'bicubic'  or interp == 2 : return cv2.INTER_CUBIC
+    if lib == 'scipy':
+        if interp == 'nearest'  or interp == 0 : return 'nearest'
+        if interp == 'bilinear' or interp == 1 : return 'bilinear'
+        if interp == 'bicubic'  or interp == 2 : return 'bicubic'
 
 ########################### RESIZES
 
 ### DO RESIZE
-def do_resize( image , size , interp , **kwargs ):
-    return cv2.resize( image , size , interpolation = interp , **kwargs )
+def do_resize( image , size , interp , lib , tib , **kwargs ):
+    if tib: image = image.astype( np.uint8 )
+    if lib == 'opencv': image = cv2.resize( image , size , interpolation = interp , **kwargs )
+    if lib == 'scipy':  image = scipy.misc.imresize( image , size )
+    if tib: image = image.astype( np.float32 )
+    return image
 ### RESIZE
-def resize( image , size , interp = 0 , prob = None , **kwargs ):
+def resize( image , size , interp = 0 , lib = 'opencv' , tib = False , prob = None , **kwargs ):
     if prob is not None and kld.rnd.f() < prob: return image
     size , interp = prep_tuple( size , image , swap = True ) , prep_interp( interp )
-    return kld.process( image , do_resize , size , interp , **kwargs )
+    return kld.process( image , do_resize , size , interp , lib , tib , **kwargs )
 
 ########################### FLIPS
 

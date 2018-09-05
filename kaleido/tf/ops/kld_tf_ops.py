@@ -2,9 +2,13 @@
 import tensorflow as tf
 import kaleido as kld
 
+######################
+
 ### TOFLOAT
 def toFloat( t ):
     return tf.cast( t , tf.float32 )
+
+######################
 
 ### TOTAL VARIATION LOSS
 def total_variation_loss( img ):
@@ -23,6 +27,8 @@ def total_variation_loss( img ):
 
     return loss
 
+######################
+
 ### GRAM MATRIX
 def gram_matrix( tensor ):
 
@@ -34,3 +40,32 @@ def gram_matrix( tensor ):
     gram = tf.matmul( feats_T , feats ) / chw
 
     return gram
+
+######################
+
+### PHASE SHIFT1
+def phase_shift1( X , r ):
+    bs , a , b , _ = kld.tf.shape( X )
+    X = tf.reshape( X , ( bs , a , b , r , r ) )
+    X = tf.transpose( X , ( 0 , 1 , 2 , 4 , 3 ) )
+    X = tf.split( X , a , 1 )
+    X = tf.concat( [ tf.squeeze( x , axis = 1 ) for x in X ] , 2 )
+    X = tf.split( X , b , 1 )
+    X = tf.concat( [ tf.squeeze( x , axis = 1 ) for x in X ] , 2 )
+    X = tf.reshape( X , ( bs , a * r , b * r , 1 ) )
+    return X
+
+### PHASE SHIFT
+def phase_shift( X , r , c = 1 ):
+    if c == 1: return phase_shift1( X , r )
+    else: return tf.concat( [ phase_shift1( x , r ) for x in tf.split( X , c , 3 ) ] , 3 )
+
+######################
+
+### LLRELU
+def llrelu( x , leak = 0.2 ):
+    f1 , f2 = 0.5 * ( 1 + leak ) , 0.5 * ( 1 - leak )
+    return f1 * x + f2 * abs( x )
+
+######################
+

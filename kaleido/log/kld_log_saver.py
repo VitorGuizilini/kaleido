@@ -52,7 +52,8 @@ class Saver:
         if kld.chk.is_tup( name ):
             for item in name: self.start_model( item )
         else:
-            if vars is not None and kld.chk.is_str( vars ): vars = kld.tf.global_vars( vars )
+            if vars is not None and kld.chk.is_str( vars ):
+                vars = kld.tf.global_vars( vars[1:] if vars[0] == '/' else vars )
             path = self.path + ( '/models/' if not self.free else '/' ) + name
             self.stored[name] = [ tf.train.Saver( max_to_keep = max_to_keep ,
                                                   var_list  = vars ) , vars , path + '/kld_model' ]
@@ -89,6 +90,7 @@ class Saver:
 
     ### IMAGE
     def image( self , name , plt , suffix , folders = None ):
+
         if self.path is None: return
         if kld.chk.is_tup( name ):
             for i in kld.aux.rlen( name ):
@@ -103,9 +105,10 @@ class Saver:
             if suffix is not None: path += '/' + kld.lst.merge_str( suffix )
             path += '.png'
             if kld.chk.is_npy( plt ):
-                if plt.dtype == np.float32:
-                    if np.max( plt ) <= 1.0: plt = plt * 255.0
-                    plt = plt.astype( np.uint8 )
+                if plt.dtype != np.uint8:
+                    if np.max( plt ) <= 1.5:
+                        plt = np.clip( plt * 255.0 , 0.0 , 255.0 ).astype( np.uint8 )
+                else: plt = np.clip( plt , 0.0 , 255.0 )
                 if len( plt.shape ) == 3 and plt.shape[2] == 3:
                     cv2.imwrite( path , plt[:,:,::-1] )
                 else: cv2.imwrite( path , plt )

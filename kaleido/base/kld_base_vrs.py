@@ -15,6 +15,8 @@ def vrsmod( args , scope , vrs , saver ):
     name = kld.pth.callernames(1)[0].split('_')[0]
     file = 'vrs_%s.%s_vrs_%s%s' % ( file , name , file , vrs )
 
+    if scope.islower(): scope = ''
+
     if not free:
         with tensorflow.variable_scope( scope ) as scope:
             pass
