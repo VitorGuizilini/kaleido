@@ -47,7 +47,6 @@ def gram_matrix( tensor ):
 def phase_shift1( X , r ):
     bs , a , b , _ = kld.tf.shape( X )
     X = tf.reshape( X , ( bs , a , b , r , r ) )
-    X = tf.transpose( X , ( 0 , 1 , 2 , 4 , 3 ) )
     X = tf.split( X , a , 1 )
     X = tf.concat( [ tf.squeeze( x , axis = 1 ) for x in X ] , 2 )
     X = tf.split( X , b , 1 )
